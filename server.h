@@ -6,8 +6,17 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:10 by lbrusa            #+#    #+#             */
-/*   Updated: 2023/12/30 17:51:14 by lbrusa           ###   ########.fr       */
+/*   Updated: 2023/12/30 18:14:20 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 
+
+#ifndef SERVER_H
+# define SERVER_H
+
+# include <stdio.h>
+# include <signal.h>
+# include <unistd.h>
+
+#endif

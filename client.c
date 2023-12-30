@@ -6,8 +6,14 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:36 by lbrusa            #+#    #+#             */
-/*   Updated: 2023/12/30 15:47:39 by lbrusa           ###   ########.fr       */
+/*   Updated: 2023/12/30 18:17:36 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "client.h"
 
+int	main(void)
+{
+	printf("client\n");
+	return (0);
+}
