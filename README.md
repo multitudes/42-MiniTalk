@@ -47,3 +47,80 @@ UNIX signals.  We can only use these two signals: SIGUSR1 and SIGUSR2.
 ## Bonus part
 The server acknowledges every message received by sending back a signal to the
 client. Unicode characters support!
+
+## Signals and IPC
+In Linux, signals are a form of inter-process communication (IPC) used to notify a process that a specific event has occurred. Processes can send signals to other processes, and a process can define how it responds to different signals. Two common signals used for communication between processes are `SIGUSR1` and `SIGUSR2`, which stand for "User-defined signal 1" and "User-defined signal 2," respectively.
+
+Here's a basic example of two programs communicating with each other using `SIGUSR1` and `SIGUSR2`:
+
+### Program 1
+
+```c
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+
+void signal_handler(int signo) {
+    if (signo == SIGUSR1) {
+        printf("Received SIGUSR1 signal.\n");
+    } else if (signo == SIGUSR2) {
+        printf("Received SIGUSR2 signal.\n");
+    }
+}
+
+int main() {
+    signal(SIGUSR1, signal_handler);
+    signal(SIGUSR2, signal_handler);
+
+    // Infinite loop to keep the program running
+    while (1) {
+        sleep(1);
+    }
+
+    return 0;
+}
+```
+
+### Program 2
+
+```c
+#include <stdio.h>
+#include <signal.h>
+#include <unistd.h>
+
+pid_t target_pid;  // Global variable to store the target process ID
+
+void signal_handler(int signo) {
+    if (signo == SIGUSR1) {
+        printf("Sender process received SIGUSR1 signal.\n");
+    } else if (signo == SIGUSR2) {
+        printf("Sender process received SIGUSR2 signal.\n");
+    }
+}
+
+int main() {
+    // Get the process ID of the target process (Program 1)
+    target_pid = /* Replace this with the actual PID of Program 1 */;
+
+    signal(SIGUSR1, signal_handler);
+    signal(SIGUSR2, signal_handler);
+
+    // Infinite loop to keep the program running
+    while (1) {
+        // Send SIGUSR1 signal to the target process
+        kill(target_pid, SIGUSR1);
+        sleep(2);
+
+        // Send SIGUSR2 signal to the target process
+        kill(target_pid, SIGUSR2);
+        sleep(2);
+    }
+
+    return 0;
+}
+```
+
+You can obtain the PID of Program 1 by running it and checking the process ID using tools like `ps` or `pgrep`.  
+In this example, the program 1 registers signal handlers for `SIGUSR1` and `SIGUSR2`. The program 2 sends these signals to the other process using the `kill` system call. The Sender process, upon receiving the signals, executes the corresponding signal handler functions.
+
+There are also more advanced IPC mechanisms available for inter-process communication, such as pipes, sockets, and message queues.
