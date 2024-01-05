@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:25 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 14:18:05 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 15:24:08 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,22 +20,23 @@ typedef void (*sighandler_t)(int);
 void	sighandler(int sig, siginfo_t *siginfo, void *ucontext)
 {
 	(void)ucontext;
-	static int usr1 = 0;
-	if (usr1 == 1)
-	{
-		printf("si pid %d\n", siginfo->si_pid);
-		kill(siginfo->si_pid,SIGUSR1);
-	}
+	static int bits = 0;
 	if (sig == SIGUSR1) {
-		usr1++;
-		 printf("SIGUSR1!! %d\n", usr1);
-		write(1,"usr1\n",6);
+		bits++;
+		//  printf("SIGUSR1!! %d\n", bits);
+		//write(1,"bits\n",6);
 	} 
 	else if (sig == SIGUSR2)
 	{
-		// usr2++;
+		bits++;
 		// printf("SIGUSR2!! %d\n", usr2);
-		write(1,"usr2\n",6);
+		//write(1,"usr2\n",6);
+	}
+	if (bits == 8)
+	{
+		bits = 0;
+		printf("si pid %d\n", siginfo->si_pid);
+		kill(siginfo->si_pid,SIGUSR1);
 	}
 }
 

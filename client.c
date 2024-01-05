@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:36 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 14:36:06 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 15:15:45 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@
 // if (cnt == 0)
 // 	fprintf(of, "%s<empty signal set>\n", prefix);
 // }
+
+/* 
+I need it because there is no way of passing this info which I get
+from the arguments of my client process to the handler of a signal. 
+It has to be global
+*/
+static pid_t pid;
 
 int	_getint(const char *str)
 {
@@ -69,9 +76,20 @@ int	send_str(char *str)
 		while (--bits >= 0)
 		{
 			if  (*str & (1 << bits))
+			{
+				if (kill(pid,SIGUSR1) != 0)
+					return (exit_err("SIGUSR1 kill err in handler\n"));
 				write(1, "1", 1);
+				usleep(50);
+			}
+				
 			else
+			{
+				if (kill(pid,SIGUSR2) != 0)
+					return (exit_err("SIGUSR2 kill err in handler\n"));
 				write(1, "0", 1);
+				usleep(50);
+			}
 		}
 		str++;
 		i++;
@@ -88,8 +106,6 @@ void	handler_ack(int sig)
 
 int	main(int argc, char *argv[])
 {
-	pid_t pid;
-	// int s;
 	struct sigaction sa;
 
 	if (!(argc == 3) || !_getint(argv[1]) || argv[1] == NULL)
@@ -109,6 +125,7 @@ int	main(int argc, char *argv[])
 		
 	if (!send_str(argv[2]))
 		return (exit_err("Usage ./client pid message\n"));
+
 
 
 
