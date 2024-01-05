@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:10 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 14:05:07 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 15:27:15 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # include "libft/libft.h"
 
 // typedef void (*sighandler_t)(int, siginfo_t, void*);
+typedef void (*sighandler_t)(int);
 
 void	sighandler(int sig, siginfo_t *siginfo, void *ucontext);
 

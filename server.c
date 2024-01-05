@@ -6,38 +6,74 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:25 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 15:24:08 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 16:30:41 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-// static int usr1 = 0;
-// static int usr2 = 0;
-typedef void (*sighandler_t)(int);
-
+int	_decoder(char *byte)
+{
+	int	i;
+	int	dec;
+(void)byte;
+	i = 0;
+	dec = 65;
+	while (i < 8)
+	{
+		// dec = dec * 2 + byte[i] - '0';
+		i++;
+	}
+	return (dec);
+}
 
 void	sighandler(int sig, siginfo_t *siginfo, void *ucontext)
 {
+	char byte[9];
 	(void)ucontext;
 	static int bits = 0;
+
 	if (sig == SIGUSR1) {
+		byte[bits] = '1';
 		bits++;
 		//  printf("SIGUSR1!! %d\n", bits);
 		//write(1,"bits\n",6);
 	} 
 	else if (sig == SIGUSR2)
 	{
+		byte[bits] = '0';
 		bits++;
 		// printf("SIGUSR2!! %d\n", usr2);
 		//write(1,"usr2\n",6);
 	}
 	if (bits == 8)
 	{
+		byte[8] = 0;
 		bits = 0;
-		printf("si pid %d\n", siginfo->si_pid);
+		printf("si pid %d - %s\n", siginfo->si_pid, byte);
+		printf("%c",_decoder(byte));
 		kill(siginfo->si_pid,SIGUSR1);
 	}
+
+	// if (sig == SIGUSR1) {
+	// 	byte[bits++] = '1';
+	// 	//  printf("SIGUSR1!! %d\n", bits);
+	// 	write(1,"usr1\n",6);
+	// } 
+	// else if (sig == SIGUSR2)
+	// {
+	// 	byte[bits++] = '0';
+	// 	// printf("SIGUSR2!! %d\n", usr2);
+	// 	write(1,"usr2\n",6);
+	// }
+	// if (bits == 7)
+	// {
+	// 	bits = 0;
+	// 	byte[8] = 0;	
+	// 	printf("si pid %d and byte %c\n", siginfo->si_pid, 65 );
+	// 	// kill(siginfo->si_pid,SIGUSR1);// _decoder(byte)
+	// }
+	// kill(siginfo->si_pid,SIGUSR1);
 }
 
 void	exit_handler(int sig)

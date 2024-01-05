@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:36 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 15:15:45 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 16:28:30 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	send_str(char *str)
 				if (kill(pid,SIGUSR1) != 0)
 					return (exit_err("SIGUSR1 kill err in handler\n"));
 				write(1, "1", 1);
-				usleep(50);
+				usleep(100);
 			}
 				
 			else
@@ -88,7 +88,7 @@ int	send_str(char *str)
 				if (kill(pid,SIGUSR2) != 0)
 					return (exit_err("SIGUSR2 kill err in handler\n"));
 				write(1, "0", 1);
-				usleep(50);
+				usleep(100);
 			}
 		}
 		str++;
@@ -118,13 +118,13 @@ int	main(int argc, char *argv[])
 			return (exit_err("sigaction client failed\n"));
 	printf("client server pid=|%s| msg=|%s|\n", argv[1], argv[2]);
 	pid = _getint(argv[1]);
-	printf("pid is integer %d \n",pid);
+	printf("server pid is integer %d \n",pid);
 
 	if (signal(SIGINT, exit_handler) == SIG_ERR)
 		return (exit_err("signal failed\n"));
 		
 	if (!send_str(argv[2]))
-		return (exit_err("Usage ./client pid message\n"));
+		return (exit_err("failed to send string\n"));
 
 
 
