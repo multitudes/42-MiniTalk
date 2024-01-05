@@ -84,7 +84,7 @@ Example of soft exit sending a ^C (interrupt signal or SIGINT) to a process.
 ```c
 /* change the disposition with signal() and add the handler, check that it has not failed */
 if (signal(SIGINT, exit_handler) == SIG_ERR)
-    return (exit_err("signal failed\n"));
+    return (_exit_err("signal failed\n"));
 ```
 The handler
 ```c
@@ -125,7 +125,7 @@ int main() {
     
     /* with checks */
     if (signal(SIGINT, exit_handler) == SIG_ERR)
-		return (exit_err("signal failed\n"));
+		return (_exit_err("signal failed\n"));
 
 
     // Infinite loop to keep the program running
@@ -164,7 +164,7 @@ void signal_handler(int signo) {
 int main(int argc, char *argv[]) {
     // Get the process ID of the target process and pass it as arg with the message
 	if (!(argc == 3) || !_getint(argv[1]) || argv[1] == NULL)
-		return (exit_err("Usage ./client pid message\n"));
+		return (_exit_err("Usage ./client pid message\n"));
     target_pid = _getint(argv[1]); /* _getint is an utility func */
 
     // register the signal handlers. In this case It is the same for both

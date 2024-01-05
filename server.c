@@ -6,23 +6,11 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:25 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 18:29:44 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 20:25:32 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
-
-int	_decoder(char *byte)
-{
-	int	i;
-	int	dec;
-
-	i = 0;
-	dec = 0;
-	while (i < 8)
-		dec = dec * 2 + byte[i++] - '0';
-	return (dec);
-}
 
 void	sighandler(int sig, siginfo_t *siginfo, void *ucontext)
 {
@@ -57,11 +45,11 @@ int	main(void)
 	act.sa_sigaction = sighandler;
 	act.sa_flags = SA_SIGINFO;
 	if (sigaction(SIGUSR1, &act, NULL) == -1)
-		return (exit_err("sigaction failed\n"));
+		return (_exit_err("sigaction failed\n"));
 	if (sigaction(SIGUSR2, &act, NULL) == -1)
-		return (exit_err("sigaction failed\n"));
+		return (_exit_err("sigaction failed\n"));
 	if (signal(SIGINT, exit_handler) == SIG_ERR)
-		return (exit_err("SIG_ERR signal failed\n"));
+		return (_exit_err("SIG_ERR signal failed\n"));
 	while (1)
 		pause();
 	return (0);

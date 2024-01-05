@@ -6,11 +6,23 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:55 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 18:29:54 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 20:25:32 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
+
+int	_decoder(char *byte)
+{
+	int	i;
+	int	dec;
+
+	i = 0;
+	dec = 0;
+	while (i < 8)
+		dec = dec * 2 + byte[i++] - '0';
+	return (dec);
+}
 
 void	_print_pid(void)
 {
@@ -29,7 +41,7 @@ void	exit_handler(int sig)
 	exit(0);
 }
 
-int	exit_err(char *msg)
+int	_exit_err(char *msg)
 {
 	write(1, msg, ft_strlen(msg));
 	return (1);

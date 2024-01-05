@@ -19,7 +19,7 @@ ifeq ($(UNAME), Linux)
 endif
 
 # target
-all: $(SERVER_NAME) $(CLIENT_NAME)
+all: $(LIBFT) $(SERVER_NAME) $(CLIENT_NAME)
 
 $(LIBFT):
 	$(MAKE) -C $(LIBFTDIR) all
@@ -30,7 +30,7 @@ $(SERVER_OBJS) $(CLIENT_OBJS): %.o: %.c
 
 $(SERVER_NAME): LDLIBS += $(LIBFT)
 $(SERVER_NAME): $(SERVER_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(SERVER_OBJS) -L$(LIBFTDIR) -lft
+	$(CC) $(CFLAGS) -o $@ $(SERVER_OBJS) $(LDLIBS)
 
 $(CLIENT_NAME): LDLIBS += $(LIBFT) # using this is here not necessary because I use -lft
 $(CLIENT_NAME): $(CLIENT_OBJS)
