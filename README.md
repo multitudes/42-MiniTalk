@@ -3,7 +3,7 @@ The purpose of this project for 42Berlin is to code a small data exchange progra
 
 ## The rules
 We have to turn in a Makefile.  
-We have to handle errors thoroughly. In no way your program should quit unex-
+We have to handle errors thoroughly. In no way our program should quit unex-
 pectedly (segmentation fault, bus error, double free, and so forth).
 Our program mustn’t have memory leaks.  
 We can have one global variable per program (one for the client and one for
@@ -51,9 +51,30 @@ client. Unicode characters support!
 ## Signals and IPC
 In Linux, signals are a form of inter-process communication (IPC) used to notify a process that a specific event has occurred. Processes can send signals to other processes, and a process can define how it responds to different signals. Two common signals used for communication between processes are `SIGUSR1` and `SIGUSR2`, which stand for "User-defined signal 1" and "User-defined signal 2," respectively.
 
-Here's a basic example of two programs communicating with each other using `SIGUSR1` and `SIGUSR2`:
+## A first draft
+Here's a basic example of two programs communicating with each other using `SIGUSR1` and `SIGUSR2`.  
 
-### Program 1
+Each signal is defined as a unique (small) integer, starting sequentially from 1. These integers are defined in <signal.h> with symbolic names of the form SIGxxxx.
+
+When the process receives a signal, he can either ignore it, terminate or block it and react later. Also upon receiving a signal we could launch a handler to do some cleaning before quitting for example. When we change the default behaviour for a signal, this is also called changing the disposition of a signal. There are a few ways to do that.  
+
+UNIX systems provide two ways of changing the disposition of a signal: signal() and sigaction().  
+
+Signal is prototyped like this:   
+```c
+#include <signal.h>
+void ( *signal(int sig, void (*handler)(int)) ) (int);
+```
+The second argument is the handler to be called when the signal arrives:
+```c
+void    handler(int sig)
+{
+    /* Code for the handler */
+}
+```
+
+
+### Program 1 - the receiver
 
 ```c
 #include <stdio.h>
@@ -74,14 +95,13 @@ int main() {
 
     // Infinite loop to keep the program running
     while (1) {
-        sleep(1);
+        sleep(); // sleep will save CPU cycles since the process is blocked here until a signal is received
     }
-
     return 0;
 }
 ```
 
-### Program 2
+### Program 2 - the sender
 
 ```c
 #include <stdio.h>
@@ -98,12 +118,17 @@ void signal_handler(int signo) {
     }
 }
 
-int main() {
-    // Get the process ID of the target process (Program 1)
-    target_pid = /* Replace this with the actual PID of Program 1 */;
+int main(int argc, char *argv[]) {
+    // Get the process ID of the target process and pass it as arg with the message
+	if (!(argc == 3) || !_getint(argv[1]) || argv[1] == NULL)
+		return (exit_err("Usage ./client pid message\n"));
+    target_pid = _getint(argv[1]);
 
-    signal(SIGUSR1, signal_handler);
-    signal(SIGUSR2, signal_handler);
+    // register the signal handlers. In this case It is the same for both
+    if (signal(SIGUSR1, signal_handler) == SIG_ERR)
+        /* exit code here */;
+    if (signal(SIGUSR2, signal_handler) == SIG_ERR)
+        ;  /* exit code here */;
 
     // Infinite loop to keep the program running
     while (1) {
