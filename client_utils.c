@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:46 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 21:46:54 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 21:56:02 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	handler_ack(int sig)
 {
-	if (sig == SIGUSR1)
-		write(1, "\n===== Server ACK msg received successfully  ====== \n", 54);
+    (void)sig;
+    write(1, "\n===== Server ACK msg received successfully  ====== \n", 54);
     exit(0);
 }
 
