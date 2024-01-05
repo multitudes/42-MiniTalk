@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:36 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 21:45:04 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 21:59:59 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,20 @@ which I get from the command line args, to the handler of a signal.
 It has to be global.
 */
 static pid_t	g_pid;
+
+static void	handler_ack(int sig)
+{
+	(void)sig;
+	write(1, "\n===== Server ACK msg received successfully  ====== \n", 54);
+	exit(0);
+}
+
+static void	exit_handler(int sig)
+{
+	(void)sig;
+	write(1, "\n== bye bye! ==\n", 17);
+	exit(0);
+}
 
 int	_send_str(char *str)
 {

@@ -6,25 +6,11 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:46 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 21:56:02 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 21:58:55 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
-
-void	handler_ack(int sig)
-{
-    (void)sig;
-    write(1, "\n===== Server ACK msg received successfully  ====== \n", 54);
-    exit(0);
-}
-
-void	exit_handler(int sig)
-{
-	(void)sig;
-	write(1, "\n== bye bye! ==\n", 17);
-	exit(0);
-}
 
 int	_exit_err(char *msg)
 {

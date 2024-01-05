@@ -6,13 +6,13 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:25 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 20:25:32 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 22:07:31 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
-void	sighandler(int sig, siginfo_t *siginfo, void *ucontext)
+static void	sighandler(int sig, siginfo_t *siginfo, void *ucontext)
 {
 	char		byte[9];
 	char		c;
