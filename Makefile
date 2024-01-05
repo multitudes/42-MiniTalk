@@ -42,6 +42,7 @@ clean:
 
 fclean: clean
 	rm -f $(CLIENT_NAME) $(SERVER_NAME)
+	$(MAKE) -C $(LIBFTDIR) fclean
 
 re: fclean all
 

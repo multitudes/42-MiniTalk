@@ -6,12 +6,12 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:36 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 21:59:59 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 22:24:04 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "client.h"
-#define DELAY 300
+#define DELAY 150
 
 /* 
 I need a static variable because there is no way of passing this info 
