@@ -124,3 +124,11 @@ You can obtain the PID of Program 1 by running it and checking the process ID us
 In this example, the program 1 registers signal handlers for `SIGUSR1` and `SIGUSR2`. The program 2 sends these signals to the other process using the `kill` system call. The Sender process, upon receiving the signals, executes the corresponding signal handler functions.
 
 There are also more advanced IPC mechanisms available for inter-process communication, such as pipes, sockets, and message queues.
+
+## SIGUSR1 & SIGUSR2
+SIGUSR1 and SIGUSR2 are available for programmer-defined purposes. The kernel never generates these signals for a process. Processes may use these signals to notify one another of events or to synchronize with each other. In early UNIX implementations, these were the only two signals that could be freely used in applications. (In fact, processes can send one another any signal, but this has the potential for confusion if the kernel also generates one of the signals for a process.) Modern UNIX implemen- tations provide a large set of realtime signals that are also available for programmer-defined purposes 
+
+## The header signal.h on mac?
+```
+locate signal.h
+```
