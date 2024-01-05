@@ -56,14 +56,19 @@ Here's a basic example of two programs communicating with each other using `SIGU
 
 Each signal is defined as a unique (small) integer, starting sequentially from 1. These integers are defined in <signal.h> with symbolic names of the form SIGxxxx.
 
-When the process receives a signal, he can either ignore it, terminate or block it and react later. Also upon receiving a signal we could launch a handler to do some cleaning before quitting for example. When we change the default behaviour for a signal, this is also called changing the disposition of a signal. There are a few ways to do that.  
+When the process receives a signal, he can either ignore it, terminate or block it and react later. Also upon receiving a signal we could launch a handler to do some cleaning before quitting for example. When we change the default behaviour for a signal, this is also called changing the disposition of a signal. There are a few ways to do that.  There are a few ways of changing the disposition of a signal.  
 
-UNIX systems provide two ways of changing the disposition of a signal: signal() and sigaction().  
-
-Signal is prototyped like this:   
+The first, signal(), is prototyped like this, with the handler which is a pointer to a function:   
 ```c
 #include <signal.h>
-void ( *signal(int sig, void (*handler)(int)) ) (int);
+void (*signal(int sig, void (*handler)(int)))(int);
+```
+or with a typedef making it easier to read:
+```c
+typedef void (*sig_t) (int);
+
+sig_t
+signal(int sig, sig_t func);
 ```
 The second argument is the handler to be called when the signal arrives:
 ```c
@@ -72,6 +77,8 @@ void    handler(int sig)
     /* Code for the handler */
 }
 ```
+From the man pages:  
+>  This signal() facility is a simplified interface to the more general sigaction(2) facility.
 
 
 ### Program 1 - the receiver
