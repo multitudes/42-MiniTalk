@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:36 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/04 22:46:05 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 12:35:48 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,14 +60,16 @@ int	main(int argc, char *argv[])
 	int s;
 	struct sigaction sa;
 
+	if (!(argc == 3) || !_getint(argv[1]) || argv[1] == NULL)
+		return (exit_err("Usage ./client pid message\n"));
+		
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
 	sa.sa_handler = handler;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 			return (exit_err("sigaction client failed\n"));
 	
-	if (!(argc == 3) || !_getint(argv[1]) || argv[1] == NULL)
-		return (exit_err("Usage ./client pid message\n"));
+
 	printf("client server pid=|%s| msg=|%s|\n", argv[1], argv[2]);
 	pid = _getint(argv[1]);
 	printf("pid is integer %d \n",pid);
