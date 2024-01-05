@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:36 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 12:35:48 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 14:36:06 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,49 @@ int	exit_err(char *msg)
 	return (1);
 }
 
-void	handler(int sig)
+void	exit_handler(int sig)
 {
+	(void)sig;
+	write(1,"\n== bye bye! ==\n",17);
+	exit(0);
+}
 
+int	send_str(char *str)
+{
+	int	i;
+	int	len;
+	int	bits;
+	
+	i = 0;
+	len = (int)ft_strlen(str);
+	bits = 8;
+	while (i <= len)
+	{
+		bits = 8;
+		while (--bits >= 0)
+		{
+			if  (*str & (1 << bits))
+				write(1, "1", 1);
+			else
+				write(1, "0", 1);
+		}
+		str++;
+		i++;
+	}
+
+	return (1);
+}
+
+void	handler_ack(int sig)
+{
 	if (sig == SIGUSR1) 
-		write(1,"got it ====== \n",16);
+		write(1,"===== got ACK String sent successfully  ====== \n",49);
 }
 
 int	main(int argc, char *argv[])
 {
 	pid_t pid;
-	int s;
+	// int s;
 	struct sigaction sa;
 
 	if (!(argc == 3) || !_getint(argv[1]) || argv[1] == NULL)
@@ -65,67 +97,76 @@ int	main(int argc, char *argv[])
 		
 	sigemptyset(&sa.sa_mask);
 	sa.sa_flags = 0;
-	sa.sa_handler = handler;
+	sa.sa_handler = handler_ack;
 	if (sigaction(SIGUSR1, &sa, NULL) == -1)
 			return (exit_err("sigaction client failed\n"));
-	
-
 	printf("client server pid=|%s| msg=|%s|\n", argv[1], argv[2]);
 	pid = _getint(argv[1]);
 	printf("pid is integer %d \n",pid);
 
-	
+	if (signal(SIGINT, exit_handler) == SIG_ERR)
+		return (exit_err("signal failed\n"));
+		
+	if (!send_str(argv[2]))
+		return (exit_err("Usage ./client pid message\n"));
 
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);	
-	usleep(50);
-	s = kill(pid,SIGUSR1);
-	printf("s %d\n", s);	
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);	
-	usleep(50);
-	s = kill(pid,SIGUSR1);
-	printf("s %d\n", s);	
-	usleep(50);
 
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);	
-	usleep(50);
-	s = kill(pid,SIGUSR1);
-	printf("s %d\n", s);	
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);
-	usleep(50);
-	s = kill(pid,SIGUSR2);
-	printf("s %d\n", s);	
-	usleep(50);
-	s = kill(pid,SIGUSR1);
-	printf("s %d\n", s);	
-	usleep(50);
+
+
+	/* wait for ack signal */
 	while (1)
 		pause();
 	return (0);
 }
+
+/*
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);	
+	usleep(50);
+	s = kill(pid,SIGUSR1);
+	printf("s %d\n", s);	
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);	
+	usleep(50);
+	s = kill(pid,SIGUSR1);
+	printf("s %d\n", s);	
+	usleep(50);
+
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);	
+	usleep(50);
+	s = kill(pid,SIGUSR1);
+	printf("s %d\n", s);	
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);
+	usleep(50);
+	s = kill(pid,SIGUSR2);
+	printf("s %d\n", s);	
+	usleep(50);
+	s = kill(pid,SIGUSR1);
+	printf("s %d\n", s);	
+	usleep(50);
+	*/

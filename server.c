@@ -6,17 +6,16 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:25 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 12:30:15 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/05 14:18:05 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "server.h"
-
-
 
 // static int usr1 = 0;
 // static int usr2 = 0;
+typedef void (*sighandler_t)(int);
+
 
 void	sighandler(int sig, siginfo_t *siginfo, void *ucontext)
 {
@@ -42,8 +41,9 @@ void	sighandler(int sig, siginfo_t *siginfo, void *ucontext)
 
 void	exit_handler(int sig)
 {
-
-	write(1,"bye bye\n",9);
+	(void)sig;
+	write(1,"\n== bye bye! ==\n",17);
+	exit(0);
 }
 
 int	exit_err(char *msg)
@@ -67,7 +67,7 @@ int	main(void)
 			return (exit_err("sigaction server failed\n"));
 	if (sigaction(SIGUSR2, &act, NULL) == -1)
 			return (exit_err("sigaction failed\n"));
-	if (signal(SIGKILL, exit_handler) == -1)
+	if (signal(SIGINT, exit_handler) == SIG_ERR)
 		return (exit_err("signal failed\n"));
 	while (1)
 		pause();

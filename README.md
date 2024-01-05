@@ -80,6 +80,22 @@ void    handler(int sig)
 From the man pages:  
 >  This signal() facility is a simplified interface to the more general sigaction(2) facility.
 
+Example of soft exit sending a ^C (interrupt signal or SIGINT) to a process.  
+```c
+/* change the disposition with signal() and add the handler, check that it has not failed */
+if (signal(SIGINT, exit_handler) == SIG_ERR)
+    return (exit_err("signal failed\n"));
+```
+The handler
+```c
+void	exit_handler(int sig)
+{
+	(void)sig;
+	write(1,"\n== bye bye! ==\n",9);
+	exit(0);
+}
+```
+
 
 ### Program 1 - the receiver
 
@@ -96,9 +112,21 @@ void signal_handler(int signo) {
     }
 }
 
+void	exit_handler(int sig)
+{
+	(void)sig;
+	write(1,"\n== bye bye! ==\n",9);
+	exit(0);
+}
+
 int main() {
-    signal(SIGUSR1, signal_handler);
-    signal(SIGUSR2, signal_handler);
+    signal(SIGUSR1, signal_handler); /* add checks */
+    signal(SIGUSR2, signal_handler); /* add checks */
+    
+    /* with checks */
+    if (signal(SIGINT, exit_handler) == SIG_ERR)
+		return (exit_err("signal failed\n"));
+
 
     // Infinite loop to keep the program running
     while (1) {
@@ -108,14 +136,22 @@ int main() {
 }
 ```
 
+Launching it will give :
+
+```
+$> ./server
+server pid 22473 
+^C
+== bye bye ==
+$>     
+```
+
 ### Program 2 - the sender
 
 ```c
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
-
-pid_t target_pid;  // Global variable to store the target process ID
 
 void signal_handler(int signo) {
     if (signo == SIGUSR1) {
@@ -129,7 +165,7 @@ int main(int argc, char *argv[]) {
     // Get the process ID of the target process and pass it as arg with the message
 	if (!(argc == 3) || !_getint(argv[1]) || argv[1] == NULL)
 		return (exit_err("Usage ./client pid message\n"));
-    target_pid = _getint(argv[1]);
+    target_pid = _getint(argv[1]); /* _getint is an utility func */
 
     // register the signal handlers. In this case It is the same for both
     if (signal(SIGUSR1, signal_handler) == SIG_ERR)
@@ -155,12 +191,15 @@ int main(int argc, char *argv[]) {
 You can obtain the PID of Program 1 by running it and checking the process ID using tools like `ps` or `pgrep`.  
 In this example, the program 1 registers signal handlers for `SIGUSR1` and `SIGUSR2`. The program 2 sends these signals to the other process using the `kill` system call. The Sender process, upon receiving the signals, executes the corresponding signal handler functions.
 
-There are also more advanced IPC mechanisms available for inter-process communication, such as pipes, sockets, and message queues.
+There are also more advanced IPC mechanisms available for inter-process communication, such as pipes, sockets, and message queues but in this project the challenge is to use only the SIGUSR1 and SIGUSR2.
 
 ## SIGUSR1 & SIGUSR2
 SIGUSR1 and SIGUSR2 are available for programmer-defined purposes. The kernel never generates these signals for a process. Processes may use these signals to notify one another of events or to synchronize with each other. In early UNIX implementations, these were the only two signals that could be freely used in applications. (In fact, processes can send one another any signal, but this has the potential for confusion if the kernel also generates one of the signals for a process.) Modern UNIX implemen- tations provide a large set of realtime signals that are also available for programmer-defined purposes 
 
-## The header signal.h on mac?
+
+### The header signal.h on mac?
+I was looking for the signal.h header file on my mac. There is the command locate for that. Turns out that there are many versions of this file on my system depending of where it is used!
 ```
 locate signal.h
 ```
+
