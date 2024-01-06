@@ -201,10 +201,33 @@ Definitely one of the most interesting aspects of this project has been delving 
 I realized that I did not need to add any special support. Sending an emoji is interpreted and decoded automatically in the shell terminal. 
 ## The way it is built
 Unicode has a few variants. UTF-8 is a multibytes encoding. 
-For example since it is still compatible with ascii, which in its basic form needs 7 bits. (See the man ascii mage for the values from 0 to 127.) When encoding a a char it will be using 1 byte. But when using the 🥰 emoji it will use 4 bytes (32 bits). How does this work? Lets examine the 4 bytes in the emoji encoding as I send them to the serveer:
-11110000 10011111 10100101 10110000 00000000
-The last byte is all zeroes. This is my end of string '\0' null terminator.
-I have 4 bytes.
+For example since it is still compatible with ascii, which in its basic form needs 7 bits. (See the man ascii mage for the values from 0 to 127.) When encoding a a char it will be using 1 byte. But when using the 🥰 emoji it will use 4 bytes (32 bits). How does this work? Lets examine the 4 bytes in the emoji encoding as I send them to the serveer:  
+11110000 10011111 10100101 10110000 00000000  
+The last byte is all zeroes. This is my end of string '\0' null terminator.  
+I have 4 bytes.  
+11110000 10011111 10100101 10110000  
+
+
+
+
+Let's evaluate the binary sequence `11110000100111111010010110110000`:
+
+- First byte: `11110000` (4 bits of data)
+- Second byte: `10011111` (6 bits of data)
+- Third byte: `10100101` (6 bits of data)
+- Fourth byte: `10110000` (5 bits of data)
+
+Concatenating all the bits together:
+
+```
+11110000 10011111 10100101 10110000
+   11110000100111111010010110110000
+```
+
+Now, the correct binary `11110000100111111010010110110000` corresponds to the Unicode code point represented by this UTF-8 sequence.
+
+In decimal, this code point is `128368`, which is the correct Unicode code point for the "🥰" emoji (SMILING FACE WITH SMILING EYES AND THREE HEARTS). I apologize for the earlier oversight, and thank you for bringing it to my attention.
+
 
 ## Unicode Code points
 In Unicode, characters can be represented using their hexadecimal code points. The code point for the "🥰" emoji is U+1F970. When you enter <0001f970> in some contexts, the system might interpret it as a Unicode escape sequence or code point, leading to the display of the corresponding emoji.
@@ -215,3 +238,17 @@ I was looking for the signal.h header file on my mac. There is the command locat
 locate signal.h
 ```
 
+
+
+
+
+Yes, in a UTF-8 encoded Unicode sequence, the first few bits of the first byte indicate the total number of bytes used to represent the character. UTF-8 is a variable-width encoding, meaning that different characters may use different numbers of bytes. The leading bits of the first byte help determine the length of the encoded sequence.
+
+Here's a breakdown of the structure of a UTF-8 encoded sequence:
+
+- If the first byte starts with `0`, it represents a single-byte character (ASCII character) and is followed by 7 bits of character data.
+- If the first byte starts with `110`, it represents a two-byte character and is followed by a total of 11 bits of character data spread across the first and second bytes.
+- If the first byte starts with `1110`, it represents a three-byte character and is followed by a total of 16 bits of character data spread across the first, second, and third bytes.
+- If the first byte starts with `11110`, it represents a four-byte character and is followed by a total of 21 bits of character data spread across the first, second, third, and fourth bytes.
+
+The remaining bytes in a multi-byte sequence start with `10` followed by 6 bits of character data.
