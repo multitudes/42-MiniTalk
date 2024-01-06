@@ -39,7 +39,8 @@ $(CLIENT_NAME): $(CLIENT_OBJS)
 
 clean:
 	rm -f $(SERVER_OBJS) $(CLIENT_OBJS)
-
+	$(MAKE) -C $(LIBFTDIR) clean
+	
 fclean: clean
 	rm -f $(CLIENT_NAME) $(SERVER_NAME)
 	$(MAKE) -C $(LIBFTDIR) fclean
