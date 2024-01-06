@@ -1,5 +1,5 @@
 # 42-MiniTalk (In progress)
-The purpose of this project for 42Berlin is to code a small data exchange program using UNIX signals. (Version: 3)
+The purpose of this project for 42Berlin is to code a small data exchange program using only the UNIX signals. (Version: 3)
 
 ## The rules
 We have to turn in a Makefile.  
@@ -196,6 +196,18 @@ There are also more advanced IPC mechanisms available for inter-process communic
 ## SIGUSR1 & SIGUSR2
 SIGUSR1 and SIGUSR2 are available for programmer-defined purposes. The kernel never generates these signals for a process. Processes may use these signals to notify one another of events or to synchronize with each other. In early UNIX implementations, these were the only two signals that could be freely used in applications. (In fact, processes can send one another any signal, but this has the potential for confusion if the kernel also generates one of the signals for a process.) Modern UNIX implemen- tations provide a large set of realtime signals that are also available for programmer-defined purposes 
 
+# Unicode
+Definitely one of the most interesting aspects of this project has been delving deeper into Unicode. What an increadible and underrated standard for displaying characters in multiple scripts and idioms including emoji and majong tiles!
+I realized that I did not need to add any special support. Sending an emoji is interpreted and decoded automatically in the shell terminal. 
+## The way it is built
+Unicode has a few variants. UTF-8 is a multibytes encoding. 
+For example since it is still compatible with ascii, which in its basic form needs 7 bits. (See the man ascii mage for the values from 0 to 127.) When encoding a a char it will be using 1 byte. But when using the 🥰 emoji it will use 4 bytes (32 bits). How does this work? Lets examine the 4 bytes in the emoji encoding as I send them to the serveer:
+11110000 10011111 10100101 10110000 00000000
+The last byte is all zeroes. This is my end of string '\0' null terminator.
+I have 4 bytes.
+
+## Unicode Code points
+In Unicode, characters can be represented using their hexadecimal code points. The code point for the "🥰" emoji is U+1F970. When you enter <0001f970> in some contexts, the system might interpret it as a Unicode escape sequence or code point, leading to the display of the corresponding emoji.
 
 ### The header signal.h on mac?
 I was looking for the signal.h header file on my mac. There is the command locate for that. Turns out that there are many versions of this file on my system depending of where it is used!
