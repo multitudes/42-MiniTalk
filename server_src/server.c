@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:25 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/13 17:36:44 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/13 18:04:07 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ static void	sighandler(int sig, siginfo_t *siginfo, void *ucontext)
 
 /*
 *** server ***
-It is a simple program which will first print its pid
+It is a simple program which will first print its pid.
 Then will initialise the sigaction struct with the 
 sigemptyset func (required)
 SA_SIGINFO is passed as flags, this is to make possible to pass

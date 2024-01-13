@@ -6,12 +6,15 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:55 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/13 16:59:19 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/13 18:02:10 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.h"
 
+/*
+utility function to decode an array of 8 bits to a byte or a char
+*/
 int	_decoder(char *byte)
 {
 	int	i;
@@ -24,6 +27,10 @@ int	_decoder(char *byte)
 	return (dec);
 }
 
+/*
+At the start the server will print its own pid
+this function does just that
+*/
 void	_print_pid(void)
 {
 	char	*pid_str;
@@ -35,6 +42,9 @@ void	_print_pid(void)
 	free(pid_str);
 }
 
+/*
+Not a handler - it will exit if there is an error
+*/
 int	_exit_err(char *msg)
 {
 	write(1, msg, ft_strlen(msg));

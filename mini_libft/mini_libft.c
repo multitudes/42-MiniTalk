@@ -6,12 +6,15 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:55 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/13 17:00:41 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/13 18:00:30 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "mini_libft.h"
-
+/*
+at first I was importing the whole libft but then I realized I 
+only need 3 functions so I made a minilibft shared between server and client
+*/
 size_t	ft_strlen(const char *s)
 {
 	size_t	i;
