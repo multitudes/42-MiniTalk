@@ -263,8 +263,64 @@ The remaining bytes in a multi-byte sequence start with `10` followed by 6 bits 
 ## Unicode Code points
 In Unicode, characters can be represented using their hexadecimal code points. The code point for the "🥰" emoji is U+1F970. When you enter <0001f970> in some contexts, the system might interpret it as a Unicode escape sequence or code point, leading to the display of the corresponding emoji.
 
+### last tweaks
+To prevent terminal input from being displayed on the command line while my server program is running, I can consider putting the terminal in raw mode to disable line buffering and echo. This way, input characters won't be displayed on the terminal.  
+This has functions which are not allowed in the subject therefore I will leave it here.  
+
+Here's a simple example in C using termios to put the terminal in raw mode:
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <termios.h>
+
+void setRawMode() {
+    struct termios term;
+    tcgetattr(STDIN_FILENO, &term);
+    term.c_lflag &= ~(ECHO | ICANON);
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+}
+
+int main() {
+    setRawMode();
+
+    while (1) {
+        // Your main program logic here
+        // Example: processing signals and performing tasks
+
+        // For demonstration purposes, let's break out of the loop after a while
+        usleep(500000);  // Sleep for 0.5 seconds
+        break;
+    }
+
+    // Restore terminal to normal mode before exiting
+    struct termios term;
+    tcgetattr(STDIN_FILENO, &term);
+    term.c_lflag |= (ECHO | ICANON);
+    tcsetattr(STDIN_FILENO, TCSANOW, &term);
+
+    printf("Exiting...\n");
+    return 0;
+}
+```
+
+In this example:
+
+- The `setRawMode` function modifies the terminal settings to disable echoing (`ECHO`) and canonical mode (`ICANON`), effectively putting the terminal in raw mode.
+- The `main` function enters a loop where you can perform your main program logic.
+- To illustrate, a `usleep` is used to simulate a running program for demonstration purposes. Replace this with your actual program logic.
+- Before exiting, the terminal settings are restored to normal mode to ensure proper cleanup.
+
+Remember that this approach may affect the way your program interacts with terminal input, so it's important to handle input processing appropriately based on your requirements.
+
 ### The header signal.h on mac?
-I was looking for the signal.h header file on my mac. There is the command locate for that. Turns out that there are many versions of this file on my system depending of where it is used!
+I was looking for the signal.h header file on my mac. There is the command locate for that. Turns out that there are many versions of this file on my system depending of where it is used! Interesting...
 ```
 locate signal.h
 ```
+
+## LINKS:
+[Recommended book: Kerrisk - The Linux Programming Interface](https://man7.org/tlpi/)  
+[Testing with Lorem Ipsum](http://loremipsum360.com)  
+

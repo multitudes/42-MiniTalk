@@ -1,33 +1,42 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.h                                           :+:      :+:    :+:   */
+/*   server_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/12/30 17:51:10 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/13 16:45:31 by lbrusa           ###   ########.fr       */
+/*   Created: 2023/12/30 17:51:55 by lbrusa            #+#    #+#             */
+/*   Updated: 2024/01/13 16:59:19 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef SERVER_H
-# define SERVER_H
+#include "server.h"
 
-# include <stdio.h>
-# include <signal.h>
-# include <unistd.h>
-# include <stdlib.h>
-# include <sys/types.h>
-# include "libft/libft.h"
+int	_decoder(char *byte)
+{
+	int	i;
+	int	dec;
 
-void	_print_pid(void);
-int		_exit_err(char *msg);
-int		_decoder(char *byte);
+	i = 0;
+	dec = 0;
+	while (i < 8)
+		dec = dec * 2 + byte[i++] - '0';
+	return (dec);
+}
 
-// libft funcs
-size_t	ft_strlen(const char *s);
-char	*ft_strdup(const char *s1);
-char	*ft_itoa(int n);
+void	_print_pid(void)
+{
+	char	*pid_str;
 
+	pid_str = ft_itoa(getpid());
+	write(1, "server pid ", 12);
+	write(1, pid_str, ft_strlen(pid_str));
+	write(1, NEWLINE, 1);
+	free(pid_str);
+}
 
-#endif
+int	_exit_err(char *msg)
+{
+	write(1, msg, ft_strlen(msg));
+	return (1);
+}

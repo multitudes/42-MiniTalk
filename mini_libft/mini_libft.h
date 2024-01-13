@@ -1,41 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server_utils.c                                     :+:      :+:    :+:   */
+/*   mini_libft.h                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:55 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/13 13:01:37 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/13 17:38:58 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.h"
+#ifndef MINI_LIBFT_H
+# define MINI_LIBFT_H
 
-int	_decoder(char *byte)
-{
-	int	i;
-	int	dec;
+# include <stdio.h>
+# include <unistd.h>
+# include <stdlib.h>
 
-	i = 0;
-	dec = 0;
-	while (i < 8)
-		dec = dec * 2 + byte[i++] - '0';
-	return (dec);
-}
+size_t	ft_strlen(const char *s);
+char	*ft_strdup(const char *s1);
+char	*ft_itoa(int n);
 
-void	_print_pid(void)
-{
-	char	*pid_str;
-
-	pid_str = ft_itoa(getpid());
-	write(1, "server pid ", 12);
-	write(1, pid_str, ft_strlen(pid_str));
-	write(1, NEWLINE, 1);
-}
-
-int	_exit_err(char *msg)
-{
-	write(1, msg, ft_strlen(msg));
-	return (1);
-}
+#endif

@@ -1,25 +1,22 @@
 CFLAGS = -Wall -Werror -Wextra
 CC = cc
 
-SERVER_SRCS = server.c server_utils.c
-CLIENT_SRCS = client.c client_utils.c
+MINI_LIBFT_SRCS = mini_libft/mini_libft.c
+
+SERVER_SRCS = $(addprefix server_src/, server.c server_utils.c)
+CLIENT_SRCS = $(addprefix client_src/,client.c client_utils.c)
 
 SERVER_OBJS = $(SERVER_SRCS:.c=.o)
 CLIENT_OBJS = $(CLIENT_SRCS:.c=.o)
 
-SERVER_NAME = server
-CLIENT_NAME = client
+MINI_LIBFT_OBJ = $(MINI_LIBFT_SRCS:.c=.o)
 
-LIBFTDIR = libft
-LIBFT = $(LIBFTDIR)/libft.a
-LIBFT_INCLUDES = -Ilibft
+SERVER_NAME = build/server
+CLIENT_NAME = build/client
 
-LDLIBS = -lm
 UNAME = $(shell uname -s)
 ARCH := $(shell arch)
-ifeq ($(UNAME), Linux)
-    LDLIBS += -lbsd
-endif
+
 ifeq ($(UNAME), Darwin)
 	 ifeq ($(ARCH), arm64)
         CC += -arch arm64
@@ -28,34 +25,30 @@ ifeq ($(UNAME), Darwin)
     endif
 endif
 
-# target
-all: $(LIBFT) $(SERVER_NAME) $(CLIENT_NAME)
+# targets
+all: build $(SERVER_NAME) $(CLIENT_NAME)
 
-$(LIBFT):
-	$(MAKE) -C $(LIBFTDIR) all
+build:
+	@mkdir -p build
 
 # Static pattern rule for compilation
-$(SERVER_OBJS) $(CLIENT_OBJS): %.o: %.c
+$(SERVER_OBJS) $(CLIENT_OBJS) $(MINI_LIBFT_OBJ): %.o: %.c
 	 $(CC) $(CFLAGS) -c $< -o $@
 
-$(SERVER_NAME): LDLIBS += $(LIBFT)
-$(SERVER_NAME): $(SERVER_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(SERVER_OBJS) $(LDLIBS)
+$(SERVER_NAME): $(SERVER_OBJS) $(MINI_LIBFT_OBJ)
+	$(CC) $(CFLAGS) -o $@ $(SERVER_OBJS) $(MINI_LIBFT_OBJ)
 
-$(CLIENT_NAME): LDLIBS += $(LIBFT)
-$(CLIENT_NAME): $(CLIENT_OBJS)
-	$(CC) $(CFLAGS) -o $@ $(CLIENT_OBJS) $(LDLIBS)
+$(CLIENT_NAME): $(CLIENT_OBJS) $(MINI_LIBFT_OBJ)
+	$(CC) $(CFLAGS) -o $@ $(CLIENT_OBJS) $(MINI_LIBFT_OBJ)
 
 %.o: %.c
-	gcc $(CCFLAGS) $(LIBFT_INCLUDES) -c $< -o $@
+	CC $(CCFLAGS) -c $< -o $@
 
 clean:
-	rm -f $(SERVER_OBJS) $(CLIENT_OBJS)
-	$(MAKE) -C $(LIBFTDIR) clean
+	rm -f $(SERVER_OBJS) $(CLIENT_OBJS) $(MINI_LIBFT_OBJ)
 	
 fclean: clean
-	rm -f $(CLIENT_NAME) $(SERVER_NAME)
-	$(MAKE) -C $(LIBFTDIR) fclean
+	rm -rf build $(CLIENT_NAME) $(SERVER_NAME)
 
 re: fclean all
 

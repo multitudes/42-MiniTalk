@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:10 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/13 16:45:31 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/13 17:19:24 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,12 @@
 # include <unistd.h>
 # include <stdlib.h>
 # include <sys/types.h>
-# include "libft/libft.h"
+# include "../mini_libft/mini_libft.h"
+
+# define NEWLINE "\n"
 
 void	_print_pid(void);
 int		_exit_err(char *msg);
 int		_decoder(char *byte);
-
-// libft funcs
-size_t	ft_strlen(const char *s);
-char	*ft_strdup(const char *s1);
-char	*ft_itoa(int n);
-
 
 #endif
