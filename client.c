@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:36 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/13 13:51:26 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/13 13:55:19 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,5 @@ int	main(int argc, char *argv[])
 		return (_exit_err("\nFailed to send string\n"));
 	while (1)
 		pause();
-	printf("\nReached end-of-file. Exiting...\n");
 	return (0);
 }
