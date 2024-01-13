@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:36 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/05 22:24:04 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/06 12:06:21 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ static void	exit_handler(int sig)
 	exit(0);
 }
 
+/*
+FOR DEBUG
+	write(1,"1",1);
+	write(1,"0",1);
+*/
 int	_send_str(char *str)
 {
 	int	len;
