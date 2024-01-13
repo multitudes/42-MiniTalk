@@ -199,16 +199,38 @@ SIGUSR1 and SIGUSR2 are available for programmer-defined purposes. The kernel ne
 # Unicode
 Definitely one of the most interesting aspects of this project has been delving deeper into Unicode. What an increadible and underrated standard for displaying characters in multiple scripts and idioms including emoji and majong tiles!
 I realized that I did not need to add any special support. Sending an emoji is interpreted and decoded automatically in the shell terminal. 
-## The way it is built
-Unicode has a few variants. UTF-8 is a multibytes encoding. 
+
+## variants of UNICODE 
+Unicode is a character encoding standard that aims to represent every character from every writing system in use today. Different Unicode Transformation Formats (UTF) are used to encode these characters for storage and processing. Here are the main UTF variants:
+
+1. **UTF-8:**
+   - UTF-8 is the most widely used Unicode encoding. It represents each character in one to four bytes, with ASCII characters using one byte and extended characters using more.
+   - It's backward compatible with ASCII, meaning that ASCII-encoded text is also valid UTF-8.
+
+2. **UTF-16:**
+   - UTF-16 uses two bytes (16 bits) to represent most characters but uses a pair of two-byte sequences, known as a surrogate pair, to represent characters beyond the Basic Multilingual Plane (BMP).
+   - It is commonly used in environments where characters outside the BMP are rare.
+
+3. **UTF-32:**
+   - UTF-32 uses four bytes (32 bits) to represent each character. Each character is represented by a fixed-size 32-bit unit.
+   - It is less commonly used than UTF-8 and UTF-16 due to its larger storage requirements.
+
+4. **UTF-7:**
+   - UTF-7 is a variable-width encoding that represents characters using seven bits per base character. It is used in email protocols and has limited usage outside of that context.
+
+5. **UTF-EBCDIC:**
+   - UTF-EBCDIC is an encoding used on IBM mainframes. It is similar to UTF-16 but uses the EBCDIC character set.
+
+Among these, UTF-8 is often preferred for text encoding in many applications due to its efficiency, compatibility with ASCII, and widespread adoption on the internet.
+
+It's important to note that the terms "UTF" and "Unicode" are sometimes used interchangeably, but they refer to different concepts. Unicode is a character set, while UTF is a set of character encoding schemes that allow the representation of Unicode characters.
+
+## The way UTF-8 works 
 For example since it is still compatible with ascii, which in its basic form needs 7 bits. (See the man ascii mage for the values from 0 to 127.) When encoding a a char it will be using 1 byte. But when using the 🥰 emoji it will use 4 bytes (32 bits). How does this work? Lets examine the 4 bytes in the emoji encoding as I send them to the serveer:  
 11110000 10011111 10100101 10110000 00000000  
 The last byte is all zeroes. This is my end of string '\0' null terminator.  
 I have 4 bytes.  
 11110000 10011111 10100101 10110000  
-
-
-
 
 Let's evaluate the binary sequence `11110000100111111010010110110000`:
 
@@ -226,23 +248,8 @@ Concatenating all the bits together:
 
 Now, the correct binary `11110000100111111010010110110000` corresponds to the Unicode code point represented by this UTF-8 sequence.
 
-In decimal, this code point is `128368`, which is the correct Unicode code point for the "🥰" emoji (SMILING FACE WITH SMILING EYES AND THREE HEARTS). I apologize for the earlier oversight, and thank you for bringing it to my attention.
-
-
-## Unicode Code points
-In Unicode, characters can be represented using their hexadecimal code points. The code point for the "🥰" emoji is U+1F970. When you enter <0001f970> in some contexts, the system might interpret it as a Unicode escape sequence or code point, leading to the display of the corresponding emoji.
-
-### The header signal.h on mac?
-I was looking for the signal.h header file on my mac. There is the command locate for that. Turns out that there are many versions of this file on my system depending of where it is used!
-```
-locate signal.h
-```
-
-
-
-
-
-Yes, in a UTF-8 encoded Unicode sequence, the first few bits of the first byte indicate the total number of bytes used to represent the character. UTF-8 is a variable-width encoding, meaning that different characters may use different numbers of bytes. The leading bits of the first byte help determine the length of the encoded sequence.
+## a breakdown
+in a UTF-8 encoded Unicode sequence, the first few bits of the first byte indicate the total number of bytes used to represent the character. UTF-8 is a variable-width encoding, meaning that different characters may use different numbers of bytes. The leading bits of the first byte help determine the length of the encoded sequence.
 
 Here's a breakdown of the structure of a UTF-8 encoded sequence:
 
@@ -252,3 +259,12 @@ Here's a breakdown of the structure of a UTF-8 encoded sequence:
 - If the first byte starts with `11110`, it represents a four-byte character and is followed by a total of 21 bits of character data spread across the first, second, third, and fourth bytes.
 
 The remaining bytes in a multi-byte sequence start with `10` followed by 6 bits of character data.
+
+## Unicode Code points
+In Unicode, characters can be represented using their hexadecimal code points. The code point for the "🥰" emoji is U+1F970. When you enter <0001f970> in some contexts, the system might interpret it as a Unicode escape sequence or code point, leading to the display of the corresponding emoji.
+
+### The header signal.h on mac?
+I was looking for the signal.h header file on my mac. There is the command locate for that. Turns out that there are many versions of this file on my system depending of where it is used!
+```
+locate signal.h
+```
