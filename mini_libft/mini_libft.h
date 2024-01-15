@@ -6,14 +6,14 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:55 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/13 17:38:58 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/15 10:50:37 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINI_LIBFT_H
 # define MINI_LIBFT_H
 
-# include <stdio.h>
+// # include <stdio.h>
 # include <unistd.h>
 # include <stdlib.h>
 

@@ -196,6 +196,36 @@ There are also more advanced IPC mechanisms available for inter-process communic
 ## SIGUSR1 & SIGUSR2
 SIGUSR1 and SIGUSR2 are available for programmer-defined purposes. The kernel never generates these signals for a process. Processes may use these signals to notify one another of events or to synchronize with each other. In early UNIX implementations, these were the only two signals that could be freely used in applications. (In fact, processes can send one another any signal, but this has the potential for confusion if the kernel also generates one of the signals for a process.) Modern UNIX implemen- tations provide a large set of realtime signals that are also available for programmer-defined purposes 
 
+## CTRL-Z
+
+This is a signal as well. 
+When you press `Ctrl-Z` in the Linux command line, you are sending the foreground process to the background and suspending it. The shell displays a message indicating that the process has been suspended.
+
+To bring the suspended process back to the foreground, you can use the `fg` command (foreground). In your case, it would look like this:
+
+```bash
+fg
+```
+
+This will resume the execution of the process and bring it back to the foreground. If you have multiple suspended processes, you can specify the job number to bring a specific one to the foreground:
+
+```bash
+fg %1  # Replace 1 with the job number of your process
+```
+
+If you want the process to continue running in the background, you can use the `bg` command (background) instead of `fg`:
+
+```bash
+bg
+```
+
+This will resume the execution of the process in the background. If you have multiple suspended processes, you can specify the job number for `bg` as well:
+
+```bash
+bg %1  # Replace 1 with the job number of your process
+```
+
+These commands work with the job control feature in Unix-like operating systems, allowing you to manage processes in the foreground and background within the same shell session.
 # Unicode
 Definitely one of the most interesting aspects of this project has been delving deeper into Unicode. What an increadible and underrated standard for displaying characters in multiple scripts and idioms including emoji and majong tiles!
 I realized that I did not need to add any special support. Sending an emoji is interpreted and decoded automatically in the shell terminal. 

@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 17:51:21 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/01/13 17:34:35 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/01/15 10:49:56 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 # define DELAY 150
 
-# include <stdio.h>
+// # include <stdio.h>
 # include <signal.h>
 # include <unistd.h>
 # include <stdlib.h>
