@@ -1,4 +1,4 @@
-# 42-MiniTalk (In progress)
+# 42-MiniTalk
 The purpose of this project for 42Berlin is to code a small data exchange program using only the UNIX signals. (Version: 3)
 
 ## The rules
