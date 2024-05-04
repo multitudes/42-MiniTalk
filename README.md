@@ -1,5 +1,8 @@
 # 42-MiniTalk
-The purpose of this project for 42Berlin is to code a small data exchange program using only the UNIX signals. (Version: 3)
+
+> If you find that you’re spending almost all your time on theory, start turning some attention to practical things; it will improve your theories. If you find that you’re spending almost all your time on practice, start turning some attention to theoretical things; it will improve your practice. — Donald Knuth
+
+The purpose of this project for 42Berlin is to code a small data exchange program using only the UNIX signals. (Version: 3)  it is thought as a challenge, in the real world signals will not be used in this way to communicate between processes, since they are mostly used by the kernel, but in this way we learn to think and handle signals.  
 
 ## The rules
 We have to turn in a Makefile.  
