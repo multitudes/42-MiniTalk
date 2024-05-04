@@ -51,7 +51,7 @@ client. Unicode characters support!
 ## Signals and IPC
 In Linux, signals are a form of inter-process communication (IPC) used to notify a process that a specific event has occurred. Processes can send signals to other processes, and a process can define how it responds to different signals. Two common signals used for communication between processes are `SIGUSR1` and `SIGUSR2`, which stand for "User-defined signal 1" and "User-defined signal 2," respectively.
 
-## A first draft
+## The code
 Here's a basic example of two programs communicating with each other using `SIGUSR1` and `SIGUSR2`.  
 
 Each signal is defined as a unique (small) integer, starting sequentially from 1. These integers are defined in <signal.h> with symbolic names of the form SIGxxxx.
@@ -96,8 +96,7 @@ void	exit_handler(int sig)
 }
 ```
 
-
-### Program 1 - the receiver
+### Program 1 - the server
 
 ```c
 #include <stdio.h>
@@ -146,7 +145,17 @@ server pid 22473
 $>     
 ```
 
-### Program 2 - the sender
+Example of initializing the signal handlers for the server. I consider the 5 signals corresponding to keyboard interrupt which could be being entered by a user. Typically the ^C, ^\, ^D, ^Z, ^HUP, ^ABRT. I will add the handler for each of them.  Other signals are sent by the kernel to the process like SIGTERM and will not need to handle them.  
+```c
+	if ((signal(SIGQUIT, exit_handler) == SIG_ERR) || \
+		(signal(SIGINT, exit_handler) == SIG_ERR) || \
+		(signal(SIGTERM, exit_handler) == SIG_ERR) || \
+		(signal(SIGHUP, exit_handler) == SIG_ERR) || \
+		(signal(SIGABRT, exit_handler) == SIG_ERR))
+		return (_exit_err("SIG_ERR signal failed\n"));
+```
+
+### Program 2 - the client
 
 ```c
 #include <stdio.h>
@@ -167,11 +176,10 @@ int main(int argc, char *argv[]) {
 		return (_exit_err("Usage ./client pid message\n"));
     target_pid = _getint(argv[1]); /* _getint is an utility func */
 
-    // register the signal handlers. In this case It is the same for both
+    // register the signal handler. In this case I only need the SIGUSR1 which will be the acknoledgement from the server
     if (signal(SIGUSR1, signal_handler) == SIG_ERR)
         /* exit code here */;
-    if (signal(SIGUSR2, signal_handler) == SIG_ERR)
-        ;  /* exit code here */;
+
 
     // Infinite loop to keep the program running
     while (1) {
