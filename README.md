@@ -363,5 +363,4 @@ locate signal.h
 
 ## LINKS:
 [Recommended book: Kerrisk - The Linux Programming Interface](https://man7.org/tlpi/)  
-[Testing with Lorem Ipsum](http://loremipsum360.com)  
 
