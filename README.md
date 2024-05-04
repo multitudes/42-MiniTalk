@@ -147,12 +147,12 @@ $>
 
 Example of initializing the signal handlers for the server. I consider the 5 signals corresponding to keyboard interrupt which could be being entered by a user. Typically the ^C, ^\, ^D, ^Z, ^HUP, ^ABRT. I will add the handler for each of them.  Other signals are sent by the kernel to the process like SIGTERM and will not need to handle them.  
 ```c
-	if ((signal(SIGQUIT, exit_handler) == SIG_ERR) || \
-		(signal(SIGINT, exit_handler) == SIG_ERR) || \
-		(signal(SIGTERM, exit_handler) == SIG_ERR) || \
-		(signal(SIGHUP, exit_handler) == SIG_ERR) || \
-		(signal(SIGABRT, exit_handler) == SIG_ERR))
-		return (_exit_err("SIG_ERR signal failed\n"));
+if ((signal(SIGQUIT, exit_handler) == SIG_ERR) || \
+	(signal(SIGINT, exit_handler) == SIG_ERR) || \
+	(signal(SIGTERM, exit_handler) == SIG_ERR) || \
+	(signal(SIGHUP, exit_handler) == SIG_ERR) || \
+	(signal(SIGABRT, exit_handler) == SIG_ERR))
+	return (_exit_err("SIG_ERR signal failed\n"));
 ```
 
 ### Program 2 - the client
