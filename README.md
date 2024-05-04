@@ -6,8 +6,8 @@ The purpose of this project for 42Berlin is to code a small data exchange progra
 
 ## The rules
 We have to turn in a Makefile.  
-We have to handle errors thoroughly. In no way our program should quit unex-
-pectedly (segmentation fault, bus error, double free, and so forth).
+We have to handle errors thoroughly. In no way our program should quit unexpectedly 
+(segmentation fault, bus error, double free, and so forth).
 Our program mustn’t have memory leaks.  
 We can have one global variable per program (one for the client and one for
 the server), but we will have to justify their use.
