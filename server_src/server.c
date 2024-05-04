@@ -6,7 +6,7 @@
 /*   By: lbrusa <lbrusa@student.42berlin.de>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/30 15:47:25 by lbrusa            #+#    #+#             */
-/*   Updated: 2024/05/02 18:29:05 by lbrusa           ###   ########.fr       */
+/*   Updated: 2024/05/04 13:45:06 by lbrusa           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ sig is the signal received.
 static void	sighandler(int sig, siginfo_t *siginfo, void *ucontext)
 {
 	static char		byte[9];
-	char		c;
-	static int	bits = 0;
+	char			c;
+	static int		bits = 0;
 
 	(void)ucontext;
 	if (sig == SIGUSR1)
